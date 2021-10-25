@@ -35,8 +35,8 @@ start = PythonOperator(
 )
 
 end = PythonOperator(
-    task_id='test_start',
-    python_callable=print_start,
+    task_id='test_end',
+    python_callable=print_end,
 )
 
 start >> end
