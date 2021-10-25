@@ -32,11 +32,13 @@ def print_end():
 start = PythonOperator(
     task_id='test_start',
     python_callable=print_start,
+    dag=dag
 )
 
 end = PythonOperator(
     task_id='test_end',
     python_callable=print_end,
+    dag=dag
 )
 
 start >> end
