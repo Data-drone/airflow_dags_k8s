@@ -1,3 +1,4 @@
 apache-airflow-providers-databricks==2.0.2
 apache-airflow-providers-docker==2.2.0
 airflow-provider-ray==0.2.1
+apache-airflow-providers-cncf-kubernetes==2.0.3
