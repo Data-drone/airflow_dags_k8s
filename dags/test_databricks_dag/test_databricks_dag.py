@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.providers.databricks.operators.databricks import DatabricksRunNowOperator, DatabricksSubmitRunOperatorfrom 
 from airflow.operators.python import PythonOperator
+from airflow.utils.task_group import TaskGroup
 from datetime import datetime, timedelta
 
 args = {
@@ -43,10 +44,21 @@ end = PythonOperator(
 ## Grab Databricks details from the ui on job / run / cluster
 #######
 
-job_id = 10
+job_id = [10, 11, 12]
+job_list = []
 
-test_run_job = DatabricksRunNowOperator(
-            task_id="databricks_run_now",
-            databricks_conn_id="databricks_default",
-            job_id=str(job_id)
+with TaskGroup(group_id=f'group1') as tg1:
+    
+    for id in job_id:
+        job_list.append(
+            DatabricksRunNowOperator(
+                task_id="databricks_run_now"+str(id),
+                databricks_conn_id="databricks_default",
+                job_id=str(id),
+                dag=dag
+            )
         )
+
+for item in job_list:
+    start >> item
+    item >> end 
